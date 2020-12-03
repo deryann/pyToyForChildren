@@ -40,7 +40,8 @@ lst = ['大象',
 def save_data_into_folder(lst_name):
     for str_text_item in lst_name:
         str_search = str_text_item
-        url = "https://www.google.com/search?q={}&source=lnms&tbm=isch"
+        url = "https://www.google.com.tw/search?q={}&tbm=isch&tbs=isz:l&hl=zh-TW&sa=X&biw=1519&bih=722"
+        #url = "https://www.google.com/search?q={}&source=lnms&tbm=isch"
         url = url.format(str_search)
         photolimit = 3
         headers = {'User-Agent': 'Mozilla/5.0'}
@@ -58,6 +59,7 @@ def save_data_into_folder(lst_name):
             if (item and index < photolimit ):
                 if not 'http'  in item.get('src') :
                     continue
+                print(item.get('src'))
                 html = requests.get(item.get('src')) # use 'get' to get photo link path , requests = send request
                 img_name = folder_path+str_text_item+'_' + str(index + 1) + '.png'
                 with open(img_name,'wb') as file: #以byte的形式將圖片數據寫入
@@ -77,3 +79,12 @@ lst = ['亞洲女藝人',
       '亞洲女明星 全身照']
 
 save_data_into_folder(lst)
+
+# +
+from google_images_download import google_images_download   #importing the library
+
+response = google_images_download.googleimagesdownload()   #class instantiation
+
+arguments = {"keywords":"Polar bears,baloons,Beaches","limit":20,"print_urls":True}   #creating list of arguments
+paths = response.download(arguments)   #passing the arguments to the function
+print(paths)   #printing absolute paths of the downloaded images
