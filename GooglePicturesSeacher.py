@@ -6,8 +6,8 @@
 #     text_representation:
 #       extension: .py
 #       format_name: light
-#       format_version: '1.4'
-#       jupytext_version: 1.2.1
+#       format_version: '1.5'
+#       jupytext_version: 1.4.2
 #   kernelspec:
 #     display_name: Python 3
 #     language: python
@@ -45,6 +45,7 @@ def save_data_into_folder(lst_name):
         photolimit = 3
         headers = {'User-Agent': 'Mozilla/5.0'}
         response = requests.get(url,headers = headers) #使用 header 避免訪問受到限制
+        print(url)
         soup = BeautifulSoup(response.content, 'html.parser')
         items = soup.find_all('img')
         
@@ -55,6 +56,8 @@ def save_data_into_folder(lst_name):
         
         for index , item in enumerate (items):
             if (item and index < photolimit ):
+                if not 'http'  in item.get('src') :
+                    continue
                 html = requests.get(item.get('src')) # use 'get' to get photo link path , requests = send request
                 img_name = folder_path+str_text_item+'_' + str(index + 1) + '.png'
                 with open(img_name,'wb') as file: #以byte的形式將圖片數據寫入
@@ -66,5 +69,11 @@ def save_data_into_folder(lst_name):
 
 
 # -
+
+save_data_into_folder(lst)
+
+lst = ['亞洲女藝人', 
+      '亞洲女明星',
+      '亞洲女明星 全身照']
 
 save_data_into_folder(lst)
